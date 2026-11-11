@@ -1,0 +1,53 @@
+name: Bookstore CI CD
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    name: CI - Build dan Tes 3 Container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout kode
+        uses: actions/checkout@v4
+      - name: Periksa sintaks JavaScript
+        run: |
+          node --check backend/server.js
+          node --check frontend/app.js
+      - name: Build dan jalankan container sementara
+        run: docker compose up -d --build --wait --wait-timeout 180
+      - name: Tes frontend, API, dan database
+        run: |
+          curl --fail --silent --show-error http://localhost:8080/ | grep -q 'BookNest'
+          curl --fail --silent --show-error http://localhost:8080/api/health | grep -q 'connected'
+          curl --fail --silent --show-error http://localhost:8080/api/books | grep -q 'Atomic Habits'
+      - name: Bersihkan container pengujian
+        if: always()
+        run: docker compose down -v
+
+  deploy:
+    name: CD - Deploy ke Docker Desktop Windows
+    needs: ci
+    if: github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, windows, x64]
+    steps:
+      - name: Ambil versi terbaru dari GitHub
+        uses: actions/checkout@v4
+      - name: Deploy tiga container dan tunggu siap
+        shell: powershell
+        run: |
+          docker compose up -d --build --wait --wait-timeout 180
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+      - name: Verifikasi hasil deployment
+        shell: powershell
+        run: |
+          $health = Invoke-RestMethod -Uri 'http://localhost:8080/api/health'
+          if ($health.status -ne 'ok') { throw 'Health check gagal' }
+          $page = Invoke-WebRequest -Uri 'http://localhost:8080/' -UseBasicParsing
+          if ($page.StatusCode -ne 200) { throw 'Frontend gagal' }
+          Write-Host 'Deployment berhasil: http://localhost:8080'
