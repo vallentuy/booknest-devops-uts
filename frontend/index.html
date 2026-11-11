@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BookNest | Bookstore Management</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/app.js" defer></script>
+</head>
+<body>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="brand"><div class="brand-logo">B</div><div><strong>BOOKNEST</strong><small>Management Dashboard</small></div></div>
+      <div class="nav-label">MENU UTAMA</div>
+      <div class="nav-item active">▦ <span>Koleksi Buku</span></div>
+      <div class="sidebar-bottom"><span class="status-dot"></span> Demo DevOps &middot; 3 Containers</div>
+    </aside>
+    <main class="main">
+      <header><div><div class="eyebrow">BOOKSTORE / DASHBOARD</div><h1>Kelola Koleksi Buku</h1><p class="subtitle">Satu tempat untuk mengatur katalog, harga, dan stok buku.</p></div><button id="addButton" class="btn primary">＋ Tambah Buku</button></header>
+      <section class="stats">
+        <div class="stat"><span>Jumlah Judul</span><strong id="totalBooks">–</strong><small>Buku tersedia di katalog</small></div>
+        <div class="stat"><span>Total Stok</span><strong id="totalStock">–</strong><small>Eksemplar seluruh koleksi</small></div>
+        <div class="stat"><span>Kategori</span><strong id="totalCategories">–</strong><small>Jenis buku berbeda</small></div>
+      </section>
+      <section class="catalog">
+        <div class="catalog-title"><div><h2>Daftar Buku</h2><p>Tambah, edit, cari, dan hapus koleksi.</p></div><span id="apiStatus" class="connection">● Menghubungkan...</span></div>
+        <div class="toolbar"><label class="search"><span>⌕</span><input id="searchInput" type="search" placeholder="Cari judul atau penulis..." autocomplete="off" /></label><select id="categoryFilter" aria-label="Filter kategori"><option value="">Semua kategori</option></select></div>
+        <div id="message" role="status" class="message" hidden></div>
+        <div id="bookGrid" class="book-grid"></div>
+      </section>
+      <footer>BookNest • UTS DevOps • Frontend + Backend + PostgreSQL</footer>
+    </main>
+  </div>
+
+  <dialog id="bookDialog">
+    <form id="bookForm" class="book-form">
+      <div class="dialog-head"><div><div class="eyebrow">KOLEKSI BUKU</div><h2 id="dialogTitle">Tambah Buku</h2></div><button type="button" id="closeDialog" class="close" aria-label="Tutup">×</button></div>
+      <input type="hidden" id="bookId" />
+      <label>Judul Buku<input id="title" name="title" maxlength="160" placeholder="Contoh: Clean Code" required /></label>
+      <label>Nama Penulis<input id="author" name="author" maxlength="120" placeholder="Contoh: Robert C. Martin" required /></label>
+      <label>Kategori<input id="category" name="category" maxlength="70" placeholder="Contoh: Teknologi" required /></label>
+      <div class="form-two"><label>Harga (Rp)<input id="price" name="price" type="number" min="0" step="1" required /></label><label>Jumlah Stok<input id="stock" name="stock" type="number" min="0" step="1" required /></label></div>
+      <div class="actions"><button type="button" id="cancelDialog" class="btn secondary">Batal</button><button type="submit" id="saveButton" class="btn primary">Simpan Buku</button></div>
+    </form>
+  </dialog>
+</body>
+</html>
