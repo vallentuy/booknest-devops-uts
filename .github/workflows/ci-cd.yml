@@ -39,12 +39,12 @@ jobs:
       - name: Ambil versi terbaru dari GitHub
         uses: actions/checkout@v4
       - name: Deploy tiga container dan tunggu siap
-        shell: pwsh
+        shell: powershell
         run: |
           docker compose up -d --build --wait --wait-timeout 180
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
       - name: Verifikasi hasil deployment
-        shell: pwsh
+        shell: powershell
         run: |
           $health = Invoke-RestMethod -Uri 'http://localhost:8080/api/health'
           if ($health.status -ne 'ok') { throw 'Health check gagal' }
