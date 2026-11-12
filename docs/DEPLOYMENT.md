@@ -25,7 +25,7 @@ Aplikasi BookNest menggunakan tiga container utama yang saling terhubung.
 |---|---|---|
 | Frontend | nginx:stable-alpine | Menampilkan halaman website dan meneruskan request API melalui reverse proxy. |
 | Backend | node:22-alpine | Menjalankan REST API menggunakan Node.js dan Express pada port 3000. |
-| Database | postgres:16 | Menyimpan data aplikasi menggunakan PostgreSQL. |
+| Database | postgres:16-alpine3.23 | Menyimpan data aplikasi menggunakan PostgreSQL. |
 
 Hubungan antarcontainer:
 
