@@ -557,7 +557,7 @@ dialog::backdrop {
 
 /* DEMO UTS - Automatic Deployment */
 body::after {
-  content: "CI/CD AUTO DEPLOY BERHASIL";
+  content: "BOOKNEST UTS DEPLOY FINAL";
   position: fixed;
   bottom: 16px;
   right: 16px;
